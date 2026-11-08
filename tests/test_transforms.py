@@ -27,9 +27,17 @@ def trip(**over):
     return {**base, **over}
 
 
+SCHEMA = (
+    "VendorID int, tpep_pickup_datetime timestamp, tpep_dropoff_datetime timestamp, "
+    "passenger_count double, trip_distance double, PULocationID int, DOLocationID int, "
+    "payment_type int, fare_amount double, tip_amount double, total_amount double, "
+    "_source_file string, _ingested_at timestamp"
+)
+
+
 def bronze(spark, rows):
     cols = list(trip())
-    return spark.createDataFrame([tuple(r[c] for c in cols) for r in rows], cols)
+    return spark.createDataFrame([tuple(r[c] for c in cols) for r in rows], SCHEMA)
 
 
 def reasons(quarantine):
