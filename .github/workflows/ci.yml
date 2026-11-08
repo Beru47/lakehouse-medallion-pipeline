@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install ruff
+      - run: ruff check . && ruff format --check .
+
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -e ".[dev]"
+      - name: Unit and end-to-end tests (Spark + Delta)
+        run: pytest
+      - name: Pipeline on the sample, then dbt build
+        env:
+          SOURCE: data/sample/yellow_sample.parquet
+          DBT_PROFILES_DIR: dbt
+        run: |
+          python -m lakehouse.cli all
+          cd dbt && dbt build
+      - name: Airflow DAG compiles
+        run: python -m py_compile airflow/dags/lakehouse_medallion.py
