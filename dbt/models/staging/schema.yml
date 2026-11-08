@@ -1,0 +1,18 @@
+version: 2
+models:
+  - name: stg_trips
+    columns:
+      - name: trip_id
+        tests: [unique, not_null]
+      - name: pickup_ts
+        tests: [not_null]
+      - name: pu_location_id
+        tests: [not_null]
+  - name: stg_daily_zone_metrics
+    columns:
+      - name: trips
+        tests: [not_null]
+  - name: stg_zones
+    columns:
+      - name: zone_id
+        tests: [unique, not_null]

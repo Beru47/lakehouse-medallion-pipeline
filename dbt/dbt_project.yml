@@ -1,0 +1,26 @@
+name: lakehouse
+version: "0.1.0"
+config-version: 2
+profile: lakehouse
+seed-paths: ["../data/reference"]
+model-paths: ["models"]
+snapshot-paths: ["snapshots"]
+test-paths: ["tests"]
+target-path: target
+clean-targets: [target]
+
+vars:
+  export_dir: "{{ env_var('EXPORT_DIR', '../data/export') }}"
+
+seeds:
+  lakehouse:
+    taxi_zone_lookup:
+      +column_types:
+        LocationID: integer
+
+models:
+  lakehouse:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table

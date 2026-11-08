@@ -1,0 +1,31 @@
+version: 2
+models:
+  - name: dim_zone
+    columns:
+      - name: zone_key
+        tests: [unique, not_null]
+  - name: dim_date
+    columns:
+      - name: date_key
+        tests: [unique, not_null]
+  - name: fact_trips
+    columns:
+      - name: trip_id
+        tests: [unique, not_null]
+      - name: date_key
+        tests:
+          - not_null
+          - relationships: {to: ref('dim_date'), field: date_key}
+      - name: pickup_zone_key
+        tests:
+          - relationships: {to: ref('dim_zone'), field: zone_key}
+      - name: dropoff_zone_key
+        tests:
+          - relationships: {to: ref('dim_zone'), field: zone_key}
+      - name: total_amount
+        tests:
+          - non_negative
+  - name: agg_daily_zone_metrics
+    columns:
+      - name: trips
+        tests: [not_null]
