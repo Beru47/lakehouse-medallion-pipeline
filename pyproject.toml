@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lakehouse-medallion-pipeline"
+version = "0.1.0"
+description = "Reference implementation of a bronze/silver/gold lakehouse on PySpark + Delta Lake, with dbt and Airflow."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "pyspark==3.5.3",
+  "delta-spark==3.2.1",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8",
+  "ruff>=0.6",
+  "pre-commit>=3.7",
+  "pandas>=2",
+  "pyarrow>=15",
+  "dbt-duckdb>=1.9,<1.10",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
