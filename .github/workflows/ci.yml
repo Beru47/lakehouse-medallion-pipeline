@@ -35,9 +35,8 @@ jobs:
       - name: Pipeline on the sample, then dbt build
         env:
           SOURCE: data/sample/yellow_sample.parquet
-          DBT_PROFILES_DIR: dbt
         run: |
           python -m lakehouse.cli all
-          cd dbt && dbt build
+          cd dbt && DBT_PROFILES_DIR=. dbt build
       - name: Airflow DAG compiles
         run: python -m py_compile airflow/dags/lakehouse_medallion.py
