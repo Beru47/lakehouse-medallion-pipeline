@@ -9,7 +9,7 @@ description = "Reference implementation of a bronze/silver/gold lakehouse on PyS
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-  "pyspark==3.5.3",
+  "pyspark==4.2.1",
   "delta-spark==3.2.1",
 ]
 
