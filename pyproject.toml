@@ -20,7 +20,7 @@ dev = [
   "pre-commit>=3.7",
   "pandas>=2",
   "pyarrow>=15",
-  "dbt-duckdb>=1.9,<1.10",
+  "dbt-duckdb>=1.9,<1.12",
 ]
 
 [tool.setuptools.packages.find]
